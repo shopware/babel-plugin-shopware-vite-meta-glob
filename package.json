@@ -1,0 +1,38 @@
+{
+  "name": "babel-plugin-shopware-vite-meta-glob",
+  "version": "0.0.1",
+  "homepage": "https://github.com/shopware/babel-plugin-shopware-vite-meta-glob",
+  "bugs": {
+    "url": "https://github.com/shopware/babel-plugin-shopware-vite-meta-glob/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shopware/babel-plugin-shopware-vite-meta-glob.git"
+  },
+  "license": "MIT",
+  "main": "lib/index.js",
+  "scripts": {
+    "build": "kcd-scripts build --out-dir lib",
+    "format": "kcd-scripts format",
+    "prepublish": "npm run build",
+    "test": "kcd-scripts test src/__tests__"
+  },
+  "dependencies": {
+    "@babel/runtime": "^7.13.9",
+    "@types/babel__core": "^7.1.12",
+    "debug": "^4.4.0",
+    "glob": "^10.3.10"
+  },
+  "devDependencies": {
+    "@types/babel-plugin-tester": "^9.0.1",
+    "@types/debug": "^4.1.12",
+    "@types/glob": "^8.0.1",
+    "babel-plugin-tester": "^10.0.0",
+    "kcd-scripts": "^16.0.0",
+    "typescript": "^4.9.5"
+  },
+  "engines": {
+    "node": "^20.0.0 || ^21.0.0 || ^22.0.0 || ^23.0.0",
+    "npm": ">=10.0.0"
+  }
+}

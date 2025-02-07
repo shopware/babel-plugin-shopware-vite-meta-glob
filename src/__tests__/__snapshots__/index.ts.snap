@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`vite-meta-glob should not transform glob with eager option being false: should not transform glob with eager option being false 1`] = `
+
+const modules = import.meta.glob("./fixtures/**/*", { eager: false })
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = import.meta.glob("./fixtures/**/*", {
+  eager: false,
+});
+
+
+`;
+
+exports[`vite-meta-glob should not transform glob with first argument being an array: should not transform glob with first argument being an array 1`] = `
+
+const modules = import.meta.glob(["./fixtures/**/*", "./fixtures/specific.js"])
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = import.meta.glob(["./fixtures/**/*", "./fixtures/specific.js"]);
+
+
+`;
+
+exports[`vite-meta-glob should not transform other import.meta properties: should not transform other import.meta properties 1`] = `
+
+const modules = import.meta.env("./fixtures/**/*")
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = import.meta.env("./fixtures/**/*");
+
+
+`;
+
+exports[`vite-meta-glob should transform glob with eager option: should transform glob with eager option 1`] = `
+
+const modules = import.meta.glob("./fixtures/**/*", { eager: true })
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = (function () {
+  const __glob__0_0 = require("./fixtures/file1.ts");
+  const __glob__0_1 = require("./fixtures/file2.ts");
+  const __glob__0_2 = require("./fixtures/file3.ts");
+  const __glob__context__ = {
+    "./fixtures/file1.ts": __glob__0_0,
+    "./fixtures/file2.ts": __glob__0_1,
+    "./fixtures/file3.ts": __glob__0_2,
+  };
+  return __glob__context__;
+})();
+
+
+`;
+
+exports[`vite-meta-glob should transform glob without options: should transform glob without options 1`] = `
+
+const modules = import.meta.glob("./fixtures/**/*")
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = {
+  "./fixtures/file1.ts": () => import("./fixtures/file1.ts"),
+  "./fixtures/file2.ts": () => import("./fixtures/file2.ts"),
+  "./fixtures/file3.ts": () => import("./fixtures/file3.ts"),
+};
+
+
+`;
