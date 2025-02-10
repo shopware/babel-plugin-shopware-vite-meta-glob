@@ -24,6 +24,19 @@ const modules = import.meta.glob(["./fixtures/**/*", "./fixtures/specific.js"]);
 
 `;
 
+exports[`vite-meta-glob should not transform glob with import option without eager: should not transform glob with import option without eager 1`] = `
+
+const modules = import.meta.glob("./fixtures/**/*", { import: "default" })
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = import.meta.glob("./fixtures/**/*", {
+  import: "default",
+});
+
+
+`;
+
 exports[`vite-meta-glob should not transform other import.meta properties: should not transform other import.meta properties 1`] = `
 
 const modules = import.meta.env("./fixtures/**/*")
@@ -31,6 +44,27 @@ const modules = import.meta.env("./fixtures/**/*")
       ↓ ↓ ↓ ↓ ↓ ↓
 
 const modules = import.meta.env("./fixtures/**/*");
+
+
+`;
+
+exports[`vite-meta-glob should transform glob with eager and import option: should transform glob with eager and import option 1`] = `
+
+const modules = import.meta.glob("./fixtures/**/*", { eager: true, import: "default" })
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = (function () {
+  const __glob__0_0 = require("./fixtures/file1.ts").default;
+  const __glob__0_1 = require("./fixtures/file2.ts").default;
+  const __glob__0_2 = require("./fixtures/file3.ts").default;
+  const __glob__context__ = {
+    "./fixtures/file1.ts": __glob__0_0,
+    "./fixtures/file2.ts": __glob__0_1,
+    "./fixtures/file3.ts": __glob__0_2,
+  };
+  return __glob__context__;
+})();
 
 
 `;
