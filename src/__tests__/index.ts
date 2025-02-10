@@ -20,6 +20,9 @@ pluginTester({
     'should transform glob with eager option': withFileName(
       'const modules = import.meta.glob("./fixtures/**/*", { eager: true })',
     ),
+    'should transform glob with eager and import option': withFileName(
+      'const modules = import.meta.glob("./fixtures/**/*", { eager: true, import: "default" })',
+    ),
 
     // Negative tests
     'should not transform glob with first argument being an array':
@@ -31,6 +34,9 @@ pluginTester({
     ),
     'should not transform other import.meta properties': withFileName(
       'const modules = import.meta.env("./fixtures/**/*")',
+    ),
+    'should not transform glob with import option without eager': withFileName(
+      'const modules = import.meta.glob("./fixtures/**/*", { import: "default" })',
     ),
   },
 })

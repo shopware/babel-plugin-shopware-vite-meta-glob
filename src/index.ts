@@ -101,6 +101,16 @@ export default function viteMetaGlobBabelPlugin({
                 t.isIdentifier(p.key) &&
                 p.key.name === 'eager',
             )
+          const importOption =
+            t.isObjectExpression(args[1]) &&
+            args[1].properties.filter(
+              p =>
+                t.isObjectProperty(p) &&
+                t.isIdentifier(p.key) &&
+                p.key.name === 'import',
+            )
+          const useImportOption = !!importOption && importOption.length > 0 && t.isObjectProperty(importOption[0]) && t.isStringLiteral(importOption[0].value);
+            
 
           if (
             !eagerOption ||
@@ -124,7 +134,21 @@ export default function viteMetaGlobBabelPlugin({
             )
 
             const imports = globPaths.map((globPath, idx) => {
-              const modulePath = t.stringLiteral(globPath)
+              let modulePath = t.stringLiteral(globPath)
+
+              if (useImportOption) {
+                return t.variableDeclaration('const', [
+                  t.variableDeclarator(
+                    identifiers[idx],
+                    t.memberExpression(
+                      t.callExpression(t.identifier('require'), [modulePath]),
+                      // @ts-ignore - We know it's a string literal
+                      t.identifier(importOption[0].value.value),
+                    ),
+                  ),
+                ])
+              }
+
               return t.variableDeclaration('const', [
                 t.variableDeclarator(
                   identifiers[idx],

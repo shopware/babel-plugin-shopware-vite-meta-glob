@@ -21,6 +21,7 @@ Since this was time critical we decided to create our own version. If there vers
 
 - Transforms `import.meta.glob('./dir/*.js')` into an object of dynamic imports
 - Supports `{ eager: true }` option for direct module imports
+- Supports `{ import: 'default' }` **only in combination with eager: true**
 - Handles file path normalization
 - Works with both Windows and Unix-style file paths
 
@@ -30,8 +31,6 @@ Since this was time critical we decided to create our own version. If there vers
   like syntax
 - **Doesn't transform** `import.meta.glob('./dir1/*.js', { eager: false })`
   eager false will not be transformed
-- **Doesn't transform** `import.meta.glob('./dir1/*.js', { import: 'foo' })`
-  import option will be ignored
 - **Doesn't transform** `import.meta.glob('./dir1/*.js', { query: 'foo' })`
   query option will be ignored
 
