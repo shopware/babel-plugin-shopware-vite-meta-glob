@@ -18,6 +18,29 @@ export default function viteMetaGlobBabelPlugin({
 
   const isGlobKey = (propertyName: unknown) => propertyName === 'glob'
 
+  // Helper function to extract patterns from first argument
+  const extractPatterns = (firstArg: any, cwd: string): string[] => {
+    if (t.isStringLiteral(firstArg)) {
+      // Handle single string pattern: "./fixtures/**/*"
+      return globSync(firstArg.value, {cwd, dotRelative: true})
+        .sort()
+        .map(globPath => globPath.replace(/\\/g, '/'))
+    } else if (t.isArrayExpression(firstArg)) {
+      // Handle array of string patterns: ["./path1.js", "./path2.js"]
+      const allGlobPaths: string[] = []
+      for (const element of firstArg.elements) {
+        if (t.isStringLiteral(element)) {
+          const paths = globSync(element.value, {cwd, dotRelative: true}).map(
+            globPath => globPath.replace(/\\/g, '/'),
+          )
+          allGlobPaths.push(...paths)
+        }
+      }
+      return allGlobPaths.sort()
+    }
+    return []
+  }
+
   return {
     name: 'shopware-vite-meta-glob',
     visitor: {
@@ -43,9 +66,10 @@ export default function viteMetaGlobBabelPlugin({
           return
         }
 
-        if (!t.isStringLiteral(args[0])) {
+        // Check if first argument is either a string literal or array expression
+        if (!t.isStringLiteral(args[0]) && !t.isArrayExpression(args[0])) {
           console.warn(
-            `Did not transform ${sourceFile} because the first argument is not a single string pattern`,
+            `Did not transform ${sourceFile} because the first argument is not a string pattern or array of patterns`,
           )
 
           return
@@ -54,6 +78,8 @@ export default function viteMetaGlobBabelPlugin({
         /**
          * Transform this:
          * const modules = import.meta.glob('./dir/*.js')
+         * or
+         * const modules = import.meta.glob(['./dir/file1.js', './dir/file2.js'])
          *
          * into this:
          * const modules = {
@@ -65,9 +91,7 @@ export default function viteMetaGlobBabelPlugin({
           bugger('Processing:', sourceFile)
           const cwd = nodePath.dirname(sourceFile)
           bugger(`Using directory "${cwd}" to resolve globs`)
-          const globPaths = globSync(args[0].value, {cwd, dotRelative: true})
-            .sort()
-            .map(globPath => globPath.replace(/\\/g, '/'))
+          const globPaths = extractPatterns(args[0], cwd)
 
           bugger('Glob paths: ', globPaths)
 
@@ -83,6 +107,8 @@ export default function viteMetaGlobBabelPlugin({
         /**
          * Transform this:
          * const modules = import.meta.glob('./dir/*.js', { eager: true })
+         * or
+         * const modules = import.meta.glob(['./dir/file1.js', './dir/file2.js'], { eager: true })
          *
          * Into this:
          * import * as __glob__0_0 from './dir/foo.js'
@@ -109,8 +135,11 @@ export default function viteMetaGlobBabelPlugin({
                 t.isIdentifier(p.key) &&
                 p.key.name === 'import',
             )
-          const useImportOption = !!importOption && importOption.length > 0 && t.isObjectProperty(importOption[0]) && t.isStringLiteral(importOption[0].value);
-            
+          const useImportOption =
+            !!importOption &&
+            importOption.length > 0 &&
+            t.isObjectProperty(importOption[0]) &&
+            t.isStringLiteral(importOption[0].value)
 
           if (
             !eagerOption ||
@@ -123,9 +152,7 @@ export default function viteMetaGlobBabelPlugin({
           }
 
           const cwd = nodePath.dirname(sourceFile)
-          const globPaths = globSync(args[0].value, {cwd, dotRelative: true})
-            .sort()
-            .map(globPath => globPath.replace(/\\/g, '/'))
+          const globPaths = extractPatterns(args[0], cwd)
 
           // eager: true
           if (eagerOption[0].value.value) {

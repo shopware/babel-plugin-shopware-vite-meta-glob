@@ -23,12 +23,18 @@ pluginTester({
     'should transform glob with eager and import option': withFileName(
       'const modules = import.meta.glob("./fixtures/**/*", { eager: true, import: "default" })',
     ),
+    'should transform glob with array patterns': withFileName(
+      'const modules = import.meta.glob(["./fixtures/file1.ts", "./fixtures/file2.ts"])',
+    ),
+    'should transform glob with array patterns and eager option': withFileName(
+      'const modules = import.meta.glob(["./fixtures/file1.ts", "./fixtures/file2.ts"], { eager: true })',
+    ),
+    'should transform glob with array patterns and eager and import option':
+      withFileName(
+        'const modules = import.meta.glob(["./fixtures/file1.ts", "./fixtures/file2.ts"], { eager: true, import: "default" })',
+      ),
 
     // Negative tests
-    'should not transform glob with first argument being an array':
-      withFileName(
-        'const modules = import.meta.glob(["./fixtures/**/*", "./fixtures/specific.js"])',
-      ),
     'should not transform glob with eager option being false': withFileName(
       'const modules = import.meta.glob("./fixtures/**/*", { eager: false })',
     ),
