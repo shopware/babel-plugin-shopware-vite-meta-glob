@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-shopware-vite-meta-glob",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "homepage": "https://github.com/shopware/babel-plugin-shopware-vite-meta-glob",
   "bugs": {
     "url": "https://github.com/shopware/babel-plugin-shopware-vite-meta-glob/issues"
@@ -32,7 +32,7 @@
     "typescript": "^4.9.5"
   },
   "engines": {
-    "node": "^20.0.0 || ^21.0.0 || ^22.0.0 || ^23.0.0",
+    "node": "^20.0.0 || ^21.0.0 || ^22.0.0 || ^23.0.0 || ^24.0.0",
     "npm": ">=10.0.0"
   }
 }

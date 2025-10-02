@@ -13,17 +13,6 @@ const modules = import.meta.glob("./fixtures/**/*", {
 
 `;
 
-exports[`vite-meta-glob should not transform glob with first argument being an array: should not transform glob with first argument being an array 1`] = `
-
-const modules = import.meta.glob(["./fixtures/**/*", "./fixtures/specific.js"])
-
-      ↓ ↓ ↓ ↓ ↓ ↓
-
-const modules = import.meta.glob(["./fixtures/**/*", "./fixtures/specific.js"]);
-
-
-`;
-
 exports[`vite-meta-glob should not transform glob with import option without eager: should not transform glob with import option without eager 1`] = `
 
 const modules = import.meta.glob("./fixtures/**/*", { import: "default" })
@@ -44,6 +33,58 @@ const modules = import.meta.env("./fixtures/**/*")
       ↓ ↓ ↓ ↓ ↓ ↓
 
 const modules = import.meta.env("./fixtures/**/*");
+
+
+`;
+
+exports[`vite-meta-glob should transform glob with array patterns: should transform glob with array patterns 1`] = `
+
+const modules = import.meta.glob(["./fixtures/file1.ts", "./fixtures/file2.ts"])
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = {
+  "./fixtures/file1.ts": () => import("./fixtures/file1.ts"),
+  "./fixtures/file2.ts": () => import("./fixtures/file2.ts"),
+};
+
+
+`;
+
+exports[`vite-meta-glob should transform glob with array patterns and eager option: should transform glob with array patterns and eager option 1`] = `
+
+const modules = import.meta.glob(["./fixtures/file1.ts", "./fixtures/file2.ts"], { eager: true })
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = (function () {
+  const __glob__0_0 = require("./fixtures/file1.ts");
+  const __glob__0_1 = require("./fixtures/file2.ts");
+  const __glob__context__ = {
+    "./fixtures/file1.ts": __glob__0_0,
+    "./fixtures/file2.ts": __glob__0_1,
+  };
+  return __glob__context__;
+})();
+
+
+`;
+
+exports[`vite-meta-glob should transform glob with array patterns and eager and import option: should transform glob with array patterns and eager and import option 1`] = `
+
+const modules = import.meta.glob(["./fixtures/file1.ts", "./fixtures/file2.ts"], { eager: true, import: "default" })
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = (function () {
+  const __glob__0_0 = require("./fixtures/file1.ts").default;
+  const __glob__0_1 = require("./fixtures/file2.ts").default;
+  const __glob__context__ = {
+    "./fixtures/file1.ts": __glob__0_0,
+    "./fixtures/file2.ts": __glob__0_1,
+  };
+  return __glob__context__;
+})();
 
 
 `;
