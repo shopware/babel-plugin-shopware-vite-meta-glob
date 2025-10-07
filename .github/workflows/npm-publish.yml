@@ -27,7 +27,7 @@ jobs:
       - name: Build
         run: npm run build
       - name: Update npm
-        run: npm install -g npm@latest
+        run: sudo npm install -g npm@latest
       - uses: JS-DevTools/npm-publish@v4
         with:
           access: 'public'
