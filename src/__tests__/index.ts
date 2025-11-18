@@ -1,10 +1,10 @@
-import pluginTester from 'babel-plugin-tester'
+import { pluginTester } from 'babel-plugin-tester'
 import plugin from '..'
 
 function withFileName(code: string) {
   return {
     code,
-    babelOptions: {filename: __filename},
+    babelOptions: { filename: __filename },
   }
 }
 
