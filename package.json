@@ -15,7 +15,8 @@
     "build": "kcd-scripts build --out-dir lib",
     "format": "kcd-scripts format",
     "prepublish": "npm run build",
-    "test": "kcd-scripts test src/__tests__"
+    "test": "vitest run",
+    "test:watch": "vitest"
   },
   "dependencies": {
     "@babel/runtime": "7.28.4",
@@ -29,7 +30,8 @@
     "@types/glob": "9.0.0",
     "babel-plugin-tester": "12.0.0",
     "kcd-scripts": "16.0.0",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "vitest": "4.0.10"
   },
   "engines": {
     "node": "^20.0.0 || ^21.0.0 || ^22.0.0 || ^23.0.0 || ^24.0.0",
