@@ -26,6 +26,8 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+      - name: Run tests
+        run: npm run test
       - name: Update npm
         run: sudo npm install -g npm@latest
       - uses: JS-DevTools/npm-publish@v4
