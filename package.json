@@ -1,6 +1,6 @@
 {
   "name": "babel-plugin-shopware-vite-meta-glob",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "homepage": "https://github.com/shopware/babel-plugin-shopware-vite-meta-glob",
   "bugs": {
     "url": "https://github.com/shopware/babel-plugin-shopware-vite-meta-glob/issues"
