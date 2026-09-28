@@ -136,3 +136,34 @@ const modules = import.meta.glob("./fixtures/**/*", {
 });
 
 `;
+
+exports[`vite-meta-glob > 10. should exclude the matches of negated array patterns > 10. should exclude the matches of negated array patterns 1`] = `
+
+const modules = import.meta.glob(["./negation/fixtures/**/*.ts", "!./negation/fixtures/**/*.spec/**"])
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = {
+  "./negation/fixtures/plugin.spec.ts": () =>
+    import("./negation/fixtures/plugin.spec.ts"),
+  "./negation/fixtures/plugin.ts": () =>
+    import("./negation/fixtures/plugin.ts"),
+};
+
+`;
+
+exports[`vite-meta-glob > 11. should exclude the matches of negated array patterns with eager and import option > 11. should exclude the matches of negated array patterns with eager and import option 1`] = `
+
+const modules = import.meta.glob(["./negation/fixtures/**/!(*.spec).ts", "!./negation/fixtures/**/*.spec/**"], { eager: true, import: "default" })
+
+      ↓ ↓ ↓ ↓ ↓ ↓
+
+const modules = (function () {
+  const __glob__0_0 = require("./negation/fixtures/plugin.ts").default;
+  const __glob__context__ = {
+    "./negation/fixtures/plugin.ts": __glob__0_0,
+  };
+  return __glob__context__;
+})();
+
+`;

@@ -44,5 +44,14 @@ pluginTester({
     'should not transform glob with import option without eager': withFileName(
       'const modules = import.meta.glob("./fixtures/**/*", { import: "default" })',
     ),
+
+    // Negated patterns
+    'should exclude the matches of negated array patterns': withFileName(
+      'const modules = import.meta.glob(["./negation/fixtures/**/*.ts", "!./negation/fixtures/**/*.spec/**"])',
+    ),
+    'should exclude the matches of negated array patterns with eager and import option':
+      withFileName(
+        'const modules = import.meta.glob(["./negation/fixtures/**/!(*.spec).ts", "!./negation/fixtures/**/*.spec/**"], { eager: true, import: "default" })',
+      ),
   },
 })
