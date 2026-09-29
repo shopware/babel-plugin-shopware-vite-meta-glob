@@ -27,6 +27,7 @@ version. If there version works for you stick to theirs!
   imports
 - ✅ Transforms `import.meta.glob(['./dir1/*.js', './dir2/*.js'])` array
   patterns
+- ✅ Supports negated array patterns, e.g. `['./dir/*.js', '!./dir/skip.js']`
 - ✅ Supports `{ eager: true }` option for direct module imports
 - ✅ Supports `{ import: 'default' }` **only in combination with eager: true**
 - ✅ Handles file path normalization
